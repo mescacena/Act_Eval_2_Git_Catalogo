@@ -17,6 +17,7 @@ function renderMovies() {
         li.className = "item";
         li.dataset.id = String(m.id);
 
+
         li.innerHTML = `
         <div>
           <strong>${m.title}</strong>
@@ -28,6 +29,25 @@ function renderMovies() {
       `;
         movieList.appendChild(li);
     }
+
+  for (const m of movies) {
+    const li = document.createElement("li");
+    li.className = "item";
+    li.dataset.id = String(m.id);
+
+    li.innerHTML = `
+      <div>
+        <strong>${m.title}</strong>
+        <span class="badge">${m.year}</span>
+      </div>
+      <div class="actions">
+        <button class="small edt" data-action="edit">Editar</button>
+      </div>
+    `;
+
+    movieList.appendChild(li);
+  }
+
 }
 
 function addMovie() {
@@ -51,8 +71,31 @@ function deleteMovieById(id) {
   renderMovies();
 }
 
-// Solo funciona añadir al inicio
+// Función para editar (Paso 8)
+function editMovieById(id) {
+  const movie = movies.find(m => m.id === id);
+  if (!movie) return;
+
+  const newTitle = prompt("Nuevo título:", movie.title);
+  if (newTitle === null) return;
+
+  const newYearStr = prompt("Nuevo año:", String(movie.year));
+  if (newYearStr === null) return;
+
+  const newYear = Number(newYearStr);
+
+  if (!newTitle.trim() || !newYear) {
+    alert("Datos no válidos.");
+    return;
+  }
+
+  movie.title = newTitle.trim();
+  movie.year = newYear;
+  renderMovies();
+}
+
 addBtn.addEventListener("click", addMovie);
+
 
 // NUEVO LISTENER (Paso 6)
 movieList.addEventListener("click", (e) => {
@@ -77,4 +120,22 @@ editBtn.addEventListener("click", () => alert("Se implementa en rama editar"));
 
 renderMovies();
 
+
+
+// Listener para detectar el botón de editar (Paso 8)
+movieList.addEventListener("click", (e) => {
+  const btn = e.target.closest("button");
+  if (!btn) return;
+
+  const li = e.target.closest("li.item");
+  if (!li) return;
+
+  const id = Number(li.dataset.id);
+
+  if (btn.dataset.action === "edit") {
+    editMovieById(id);
+  }
+});
+
+renderMovies();
 
