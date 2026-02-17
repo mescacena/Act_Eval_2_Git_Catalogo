@@ -11,47 +11,70 @@ let movies = [];
 let nextId = 1;
 
 function renderMovies() {
-  movieList.innerHTML = "";
+    movieList.innerHTML = "";
+    for (const m of movies) {
+        const li = document.createElement("li");
+        li.className = "item";
+        li.dataset.id = String(m.id);
 
-  for (const m of movies) {
-    const li = document.createElement("li");
-    li.className = "item";
-    li.dataset.id = String(m.id);
-
-    li.innerHTML = `
-      <div>
-        <strong>${m.title}</strong>
-        <span class="badge">${m.year}</span>
-      </div>
-      <div class="actions">
-        <!-- En ramas se añadirán botones por película -->
-      </div>
-    `;
-
-    movieList.appendChild(li);
-  }
+        li.innerHTML = `
+        <div>
+          <strong>${m.title}</strong>
+          <span class="badge">${m.year}</span>
+        </div>
+        <div class="actions">
+          <button class="small del" data-action="delete">Eliminar</button>
+        </div>
+      `;
+        movieList.appendChild(li);
+    }
 }
 
 function addMovie() {
-  const title = titleInput.value.trim();
-  const year = Number(yearInput.value);
+    const title = titleInput.value.trim();
+    const year = Number(yearInput.value);
 
-  if (!title || !year) {
-    alert("Introduce título y año.");
-    return;
-  }
+    if (!title || !year) {
+        alert("Introduce título y año.");
+        return;
+    }
 
-  movies.push({ id: nextId++, title, year });
-  titleInput.value = "";
-  yearInput.value = "";
+    movies.push({ id: nextId++, title, year });
+    titleInput.value = "";
+    yearInput.value = "";
+    renderMovies();
+}
+
+// NUEVA FUNCIÓN (Paso 6)
+function deleteMovieById(id) {
+  movies = movies.filter(m => m.id !== id);
   renderMovies();
 }
 
 // Solo funciona añadir al inicio
 addBtn.addEventListener("click", addMovie);
 
+// NUEVO LISTENER (Paso 6)
+movieList.addEventListener("click", (e) => {
+  const btn = e.target.closest("button");
+  if (!btn) return;
+
+  const li = e.target.closest("li.item");
+  if (!li) return;
+
+  const id = Number(li.dataset.id);
+
+  if (btn.dataset.action === "delete") {
+    deleteMovieById(id);
+  }
+});
+
+renderMovies();
+
 // Estos eventos se completarán en ramas
 deleteBtn.addEventListener("click", () => alert("Se implementa en rama eliminar"));
 editBtn.addEventListener("click", () => alert("Se implementa en rama editar"));
 
 renderMovies();
+
+
