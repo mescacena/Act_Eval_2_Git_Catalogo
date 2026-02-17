@@ -65,7 +65,7 @@ function addMovie() {
     renderMovies();
 }
 
-// NUEVA FUNCIÓN (Paso 6)
+// NUEVA FUNCIÓN (Paso 6..)
 function deleteMovieById(id) {
   movies = movies.filter(m => m.id !== id);
   renderMovies();
@@ -119,6 +119,9 @@ deleteBtn.addEventListener("click", () => alert("Se implementa en rama eliminar"
 editBtn.addEventListener("click", () => alert("Se implementa en rama editar"));
 
 renderMovies();
+
+
+
 
 
 
