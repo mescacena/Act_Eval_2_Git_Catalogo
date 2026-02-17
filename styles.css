@@ -100,3 +100,6 @@ input {
 
 #addBtn { background: #c0392b; }     /* rojo */
 #deleteBtn { background: #1f6feb; }  /* azul */
+
+.btn { font-weight: 700; border-radius: 14px; }
+.small { font-weight: 700; }
